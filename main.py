@@ -10,8 +10,6 @@ file_path = glob.glob("Invoices/*.xlsx")
 # print(file_path)
 
 for second_file in file_path:
-    # pandas used read_excel to read .excel files
-    df = pd.read_excel(second_file, sheet_name="Sheet 1")
 
     pdf = FPDF(orientation="P",unit="mm",format="A4")
     pdf.add_page()
@@ -32,7 +30,32 @@ for second_file in file_path:
     pdf.cell(w=0, h=8, txt=f"Invoice No.{invoice_no}", ln=1)
 
     pdf.set_font(family="Times", style="B", size=18)
-    pdf.cell(w=0, h=8, txt=f"Date: {Date}")
+    pdf.cell(w=0, h=8, txt=f"Date: {Date}",ln=1)
+
+    # pandas used read_excel to read .excel files
+    df = pd.read_excel(second_file, sheet_name="Sheet 1")
+
+    #add a header
+    column = df.columns
+    column = [item.replace("_"," ").title() for item in column]
+
+    pdf.set_font(family="Times", style="B", size=10)
+    pdf.set_text_color(100, 50, 100)
+    pdf.cell(w=30, h=8, txt=str(column[0]), border=1)
+    pdf.cell(w=70, h=8, txt=str(column[1]), border=1)
+    pdf.cell(w=40, h=8, txt=str(column[2]), border=1)
+    pdf.cell(w=30, h=8, txt=str(column[3]), border=1)
+    pdf.cell(w=25, h=8, txt=str(column[4]), border=1, ln=1)
+
+    #add rows to table
+    for index,row in df.iterrows():
+        pdf.set_font(family="Times",size=10)
+        pdf.set_text_color(100,50,100)
+        pdf.cell(w=30, h=8, txt=str(row["product_id"]),border=1)
+        pdf.cell(w=70, h=8, txt=str(row["product_name"]),border=1)
+        pdf.cell(w=40, h=8, txt=str(row["amount_purchased"]),border=1)
+        pdf.cell(w=30, h=8, txt=str(row["price_per_unit"]),border=1)
+        pdf.cell(w=25, h=8, txt=str(row["total_price"]),border=1,ln=1)
 
 
 
