@@ -56,8 +56,23 @@ for second_file in file_path:
         pdf.cell(w=40, h=8, txt=str(row["amount_purchased"]),border=1)
         pdf.cell(w=30, h=8, txt=str(row["price_per_unit"]),border=1)
         pdf.cell(w=25, h=8, txt=str(row["total_price"]),border=1,ln=1)
+    total_sum = df["total_price"].sum()
+    pdf.set_font(family="Times", size=10)
+    pdf.set_text_color(100, 50, 100)
+    pdf.cell(w=30, h=8, txt="", border=1)
+    pdf.cell(w=70, h=8, txt="", border=1)
+    pdf.cell(w=40, h=8, txt="", border=1)
+    pdf.cell(w=30, h=8, txt="", border=1)
+    pdf.cell(w=25, h=8, txt=str(total_sum), border=1, ln=1)
 
+    # Add total sum in sentence
+    pdf.set_font(family="Times", size=15,style="B")
+    pdf.cell(w=70, h=8, txt=f"The Total Price is {total_sum}", ln=1)
 
+    # Add company name and logo
+    pdf.set_font(family="Times", style="B", size=18)
+    pdf.cell(w=32, h=8,txt=f"PythonHow")
+    pdf.image("pythonhow.png", w=10)
 
     # files name is this 10001-2023.1.18
     pdf.output(f"PDFS/{filename}.pdf")
